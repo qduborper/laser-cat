@@ -12,7 +12,9 @@ board.on("ready", function() {
         turf = require('turf-random'),
         currentsid = -1,
         Joint = require('./servo-joint'),
-        Laser = require('./laser');
+        Laser = require('./laser'),
+        // Timer = require('./timer'),
+        timerCallback = null;
 
     server.listen(80);
     app.use(express.static(path.resolve(__dirname + '/../www')));
@@ -40,6 +42,18 @@ board.on("ready", function() {
             pin: 4
         });
 
+    // Timer callback
+    /*timerCallback = function(e){
+
+        //Update status for next client if exists
+        if( io.sockets.sockets.length > 1 ){
+            var soc = io.sockets.sockets[0];
+            currentsid = soc.conn.id;
+            soc.emit('updateStatus', false);
+        }
+    };*/
+
+    //Socket connection
     io.on('connection', function(socket){
         console.log("io connection ", socket.id);
         console.log("io connections : ", io.sockets.sockets.length);
@@ -49,6 +63,11 @@ board.on("ready", function() {
         }else{
             socket.emit('updateStatus', true);
         }
+
+        // Timer
+        /*if( io.sockets.sockets.length > 1 && Timer.isStopped ){
+            Timer.start(120, timerCallback);
+        }*/
 
         // Events
 

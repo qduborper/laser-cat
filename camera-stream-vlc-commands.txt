@@ -1,0 +1,4 @@
+sudo v4l2-ctl --device=/dev/video0 --set-fmt-video=width=750,height=422,pixelformat=1
+
+
+cvlc v4l2:///dev/video0:chroma=mjpg:width=750:height=422:fps=25 --sout '#standard{access=http{mime=multipart/x-mixed-replace;boundary=--7b3cc56e5f51db803f790dad720ed50a},mux=mpjpeg,dst=:1234}' -vvv

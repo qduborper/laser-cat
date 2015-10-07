@@ -1,0 +1,64 @@
+body{
+    padding-bottom: 50px;
+}
+
+.jumbotron{
+    position: relative;
+}
+
+.jumbotron .txt{
+    position: relative;
+    z-index: 2;
+}
+
+.jumbotron:before{
+    content: url("../images/chaton2.png");
+    display: block;
+    position: absolute;
+    z-index: 1;
+    right: 20px;
+    bottom: 10px;
+}
+
+/*.video{
+    position: relative;
+}
+
+.video:before{
+    content: url("../images/chaton2.png");
+    display: block;
+    position: absolute;
+    z-index: 1;
+    right: 25px;
+    bottom: 5px;
+}*/
+
+#video {
+    position: relative;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+}
+
+#video img, .img-thumbnail{
+    padding: 0;
+}
+
+#calibrateLayer {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 2;
+}
+
+.no-margin-top{
+    margin-top: 0;
+}
+
+.hide{
+    display: none;
+}
+
+.red{
+    color: #FF0000;
+}

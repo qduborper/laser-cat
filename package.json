@@ -1,0 +1,15 @@
+{
+  "name": "laser-cat",
+  "description": "Laser cat",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "express": "^4.13.3",
+    "johnny-five": "^0.8.97",
+    "luqr": "^0.3.0",
+    "path": "^0.12.7",
+    "socket.io": "^1.3.7",
+    "turf-random": "^1.0.2"
+  }
+}

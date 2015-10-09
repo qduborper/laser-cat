@@ -13,7 +13,7 @@ board.on("ready", function() {
         express = require('express'),
         app = express(),
         server = require('http').Server(app),
-        io = require('socket.io').listen(server).of('/'),
+        io = require('socket.io').listen(server).of('/www'),
         ioAdmin = require('socket.io').listen(server).of('/admin'),
         turf = require('turf-random'),
         currentsid = -1,

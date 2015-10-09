@@ -67,7 +67,6 @@ board.on("ready", function() {
 
     //Socket connection
     io.on('connection', function(socket){
-        return;
 
         console.log("io connection ", socket.id);
         console.log("io connections : ", io.sockets.sockets.length);

@@ -39,15 +39,14 @@ var Camera = function(opts) {
 
         if(_isStopped) return; 
 
-        // cameraCmd.stdout.off('data');
-        // cameraCmd.stderr.off('data');
-        // cameraCmd.off('close');
-        // cameraCmd.kill();
         _kill(cameraCmd.pid);
         _isStopped = true;
         console.log('camera stopped');
     };
 
+    /**
+     * Kill camera process
+     */
     var _kill = function (pid, signal, callback) {
         signal   = signal || 'SIGKILL';
         callback = callback || function () {};

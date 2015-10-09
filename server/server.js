@@ -13,7 +13,8 @@ board.on("ready", function() {
         express = require('express'),
         app = express(),
         server = require('http').Server(app),
-        io = require('socket.io')(server),
+        io = require('socket.io').listen(app).of('/'),
+        ioAdmin = require('socket.io').listen(app).of('/admin'),
         turf = require('turf-random'),
         currentsid = -1,
         Joint = require('./servo-joint'),
@@ -72,7 +73,8 @@ board.on("ready", function() {
         }
     };*/
 
-    //Socket connection
+    //www Socket connection
+
     io.on('connection', function(socket){
 
         console.log("io connection ", socket.id);
@@ -191,24 +193,6 @@ board.on("ready", function() {
             }
         });
 
-        // Admin
-        
-        socket.on('cameraOn', function(){
-
-            // if( socket.id !== currentsid )
-            //     return;
-
-            camera.start();
-        });
-
-        socket.on('cameraOff', function(){
-
-            // if( socket.id !== currentsid )
-            //     return;
-
-            camera.stop();
-        });
-
         // Disconnection
 
         socket.on('disconnect', function(){
@@ -232,6 +216,20 @@ board.on("ready", function() {
                 laser.led.off();
             }
         });
+    });
+
+    //Admin Socket connection
+
+    ioAdmin.on('connection', function(socket){
+
+        socket.on('cameraOn', function(){
+            camera.start();
+        });
+
+        socket.on('cameraOff', function(){
+            camera.stop();
+        });
+
     });
 
 });

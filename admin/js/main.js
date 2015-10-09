@@ -1,7 +1,7 @@
 (function ($) {
     'use strict';
 
-    var socket = io.of('/admin'),
+    var socket = io('/admin'),
         autoMode = null;
 
     //Camera

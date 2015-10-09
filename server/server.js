@@ -4,8 +4,7 @@ var five = require("johnny-five"),
 board.on("ready", function() {
     console.log("board ready");
 
-    var exec = require('child_process').exec,
-        path = require('path'),
+    var path = require('path'),
         auth = require('http-auth'),
         basic = auth.basic({
             realm: "Admin Area.",
@@ -20,11 +19,8 @@ board.on("ready", function() {
         Joint = require('./servo-joint'),
         Laser = require('./laser'),
         Timer = require('./timer'),
-        timerCallback = null,
-        cameraCmd = null;
-
-    // Camera
-    cameraCmd = exec("cvlc v4l2:///dev/video0:chroma=mjpg:width=750:height=422:fps=25 --sout '#standard{access=http{mime=multipart/x-mixed-replace;boundary=--7b3cc56e5f51db803f790dad720ed50a},mux=mpjpeg,dst=:1234}' -vvv");
+        Camera = require('./camera'),
+        timerCallback = null;
 
     // Server
     server.listen(80);
@@ -39,6 +35,10 @@ board.on("ready", function() {
     app.get('/admin', function (req, res) {
       res.sendFile('index.html');
     });
+
+    // Camera
+    var camera = new Camera();
+    camera.start();
 
     // Arduino
     var servoX = new Joint({
@@ -191,6 +191,24 @@ board.on("ready", function() {
             }
         });
 
+        // Admin
+        
+        socket.on('cameraOn', function(){
+
+            // if( socket.id !== currentsid )
+            //     return;
+
+            camera.start();
+        });
+
+        socket.on('cameraOff', function(){
+
+            // if( socket.id !== currentsid )
+            //     return;
+
+            camera.stop();
+        });
+
         // Disconnection
 
         socket.on('disconnect', function(){
@@ -214,17 +232,6 @@ board.on("ready", function() {
                 laser.led.off();
             }
         });
-    });
-
-    // Camera events
-    cameraCmd.stdout.on('data', function(data) {
-        console.log('cameraCmd stdout: ' + data);
-    });
-    cameraCmd.stderr.on('data', function(data) {
-        console.log('cameraCmd stdout: ' + data);
-    });
-    cameraCmd.on('close', function(code) {
-        console.log('cameraCmd closing code: ' + code);
     });
 
 });

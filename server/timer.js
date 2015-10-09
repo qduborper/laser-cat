@@ -1,5 +1,5 @@
 /**
- * Joint Servo
+ * Queue
  */
 var Timer = function(opts) {
 

@@ -6,6 +6,8 @@ board.on("ready", function() {
 
     var path = require('path'),
         express = require('express'),
+        auth = require('express-authentication'),
+        basic = require('express-authentication-basic')
         app = express(),
         server = require('http').Server(app),
         io = require('socket.io')(server),
@@ -18,8 +20,14 @@ board.on("ready", function() {
 
     server.listen(80);
     app.use(express.static(path.resolve(__dirname + '/../www')));
+    app.use(basic('bob', 'secret'));
+
     app.get('/', function (req, res) {
       res.sendFile('index.html');
+    });
+
+    app.get('/admin/', auth.required(), function respond(req, res) {
+        res.status(200).send(auth.of(req));
     });
 
     var servoX = new Joint({

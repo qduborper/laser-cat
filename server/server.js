@@ -5,9 +5,12 @@ board.on("ready", function() {
     console.log("board ready");
 
     var path = require('path'),
+        auth = require('http-auth'),
+        basic = auth.basic({
+            realm: "Admin Area.",
+            file: __dirname + "/../data/users.htpasswd" // gevorg:gpass, Sarah:testpass ...
+        }),
         express = require('express'),
-        auth = require('express-authentication'),
-        basic = require('express-authentication-basic')
         app = express(),
         server = require('http').Server(app),
         io = require('socket.io')(server),
@@ -15,19 +18,20 @@ board.on("ready", function() {
         currentsid = -1,
         Joint = require('./servo-joint'),
         Laser = require('./laser'),
-        // Timer = require('./timer'),
+        Timer = require('./timer'),
         timerCallback = null;
 
     server.listen(80);
-    app.use(express.static(path.resolve(__dirname + '/../www')));
-    app.use(basic('bob', 'secret'));
+    app.use('/', express.static(path.resolve(__dirname + '/../www')));
+    app.use('/admin', auth.connect(basic));
+    app.use('/admin', express.static(path.resolve(__dirname + '/../admin')));
 
     app.get('/', function (req, res) {
       res.sendFile('index.html');
     });
 
-    app.get('/admin/', auth.required(), function respond(req, res) {
-        res.status(200).send(auth.of(req));
+    app.get('/admin', function (req, res) {
+      res.sendFile('index.html');
     });
 
     var servoX = new Joint({
@@ -63,6 +67,8 @@ board.on("ready", function() {
 
     //Socket connection
     io.on('connection', function(socket){
+        return;
+
         console.log("io connection ", socket.id);
         console.log("io connections : ", io.sockets.sockets.length);
 

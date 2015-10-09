@@ -6,8 +6,7 @@
   "dependencies": {},
   "devDependencies": {
     "express": "^4.13.3",
-    "express-authentication": "^0.3.2",
-    "express-authentication-basic": "^0.3.1",
+    "http-auth": "^2.2.8",
     "johnny-five": "^0.8.97",
     "luqr": "^0.3.0",
     "node-persist": "0.0.6",

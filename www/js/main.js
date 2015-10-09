@@ -1,7 +1,7 @@
 (function ($) {
     'use strict';
 
-    var socket = io().of('/www'),
+    var socket = io.of('/www'),
         autoMode = null;
 
     // Update status

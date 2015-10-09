@@ -186,6 +186,13 @@ board.on("ready", function() {
                     soc.emit('updateStatus', false);
                 }
             }
+
+            //Turn off laser if no connections
+            if( io.sockets.sockets.length === 0 ){
+                console.log('no connections, turn off laser');
+                laser.led.stop();
+                laser.led.off();
+            }
         });
     });
 

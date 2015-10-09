@@ -13,8 +13,7 @@ board.on("ready", function() {
         express = require('express'),
         app = express(),
         server = require('http').Server(app),
-        io = require('socket.io')(server).of('/www'),
-        ioAdmin = require('socket.io')(server).of('/admin'),
+        io = require('socket.io')(server),
         turf = require('turf-random'),
         currentsid = -1,
         Joint = require('./servo-joint'),
@@ -75,7 +74,7 @@ board.on("ready", function() {
 
     //www Socket connection
 
-    io.on('connection', function(socket){
+    io.of('/www').on('connection', function(socket){
 
         console.log("io connection ", socket.id);
         console.log("io connections : ", io.sockets.sockets.length);
@@ -220,7 +219,7 @@ board.on("ready", function() {
 
     //Admin Socket connection
 
-    ioAdmin.on('connection', function(socket){
+    io.of('/admin').on('connection', function(socket){
 
         socket.on('cameraOn', function(){
             camera.start();

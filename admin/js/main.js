@@ -16,7 +16,9 @@
         $('.js-controls-bt:eq('+idControls+')').addClass('active').find('input').attr('checked', 'checked');
         
         //Breaks
-        $('.js-breaks').val( params.breaks.join('\n') );
+        if( params.breaks !== undefined ){
+            $('.js-breaks').val( params.breaks.join('\n') );
+        }
     });
 
     // Update connections
@@ -26,7 +28,12 @@
     });
 
     //Camera + controls
-    $('.js-camera-bt, .js-controls-bt').on('click', function(e){
+    $('.js-camera-bt').on('click', function(e){
+        var id = $(this).find('input').attr('id');
+        socket.emit(id);
+    });
+
+    $('.js-controls-bt').on('click', function(e){
         var id = $(this).find('input').attr('id');
         socket.emit(id);
     });

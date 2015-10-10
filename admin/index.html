@@ -48,10 +48,10 @@
                     <p class="text-right"><button class="btn btn-primary js-submit" type="submit">Save</button></p>
                 </div>
                 <div class="col-xs-12 col-md-6">
-                    <h3 class="no-margin-top">Calibration</h3>
+                    <!-- <h3 class="no-margin-top">Calibration</h3>
                     <p class="lead">
                         <a href="/admin/calibrate.html" target="_blank" class="btn btn-primary" type="submit">Calibrate</a>
-                    </p>
+                    </p> -->
                     <h3 class="no-margin-top">Camera</h3>
                     <p class="lead btn-group btn-group-justified" data-toggle="buttons">
                         <label class="btn btn-primary js-camera-bt">
@@ -73,6 +73,61 @@
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="page-header no-margin-top">
+                        <h1 class="no-margin-top">Calibration</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div id="video">
+                        <!-- Set the MJPEG video stream URL in the image source below -->
+                        <img src="http://laser-cat.ddns.net:1234"  class="img-thumbnail" />
+                        <div id="calibrateLayer"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <h3>Servo Positions</h3>
+                    <div id="xaxis" class="form-group">
+                        <label>X Axis Servo</label>
+                        <div class="alert alert-danger"></div>
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default decrease" type="button"><span class="glyphicon glyphicon-chevron-left"></span> -2</button>
+                            </span>
+                            <input type="text" class="form-control" name="xaxis" value="{{ model.getXAxis() }}"></input>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default increase" type="button">+2 <span class="glyphicon glyphicon-chevron-right"></span></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="yaxis">
+                        <label>Y Axis Servo</label>
+                        <div class="alert alert-danger"></div>
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default decrease" type="button"><span class="glyphicon glyphicon-chevron-left"></span> -2</button>
+                            </span>
+                            <input type="text" class="form-control" name="yaxis" value="{{ model.getYAxis() }}"></input>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default increase" type="button">+2 <span class="glyphicon glyphicon-chevron-right"></span></button>
+                            </span>
+                        </div>
+                    </div>
+                    <h3>Calibration</h3>
+                    <div id="calibrationStep">
+                        <p class="description"></p>
+                        <p>
+                            <button type="button" class="btn btn-default pull-left"></button>
+                            <button type="button" class="btn btn-default pull-right"></button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -80,6 +135,8 @@
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="js/bootstrap.min.js"></script>
         <script src="js/socket.io-1.3.7.js"></script>
+        <script src="js/raphael-min.js"></script>
+        <script src="js/calibration.js"></script>
         <script src="js/main.js"></script>
     </body>
 </html>

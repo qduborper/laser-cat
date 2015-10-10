@@ -1,8 +1,7 @@
 (function ($) {
     'use strict';
 
-    var socket = io('/admin'),
-        autoMode = null;
+    var autoMode = null;
 
     // Get settings
     socket.on('getSettings', function(params){

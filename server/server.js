@@ -15,6 +15,7 @@ board.on("ready", function() {
         server = require('http').Server(app),
         io = require('socket.io')(server),
         turf = require('turf-random'),
+        storage = require('node-persist'),
         currentsid = -1,
         Joint = require('./servo-joint'),
         Laser = require('./laser'),
@@ -77,12 +78,16 @@ board.on("ready", function() {
     io.of('/www').on('connection', function(socket){
 
         console.log("io connection ", socket.id);
-        console.log("io connections : ", io.sockets.sockets.length);
+        console.log("io connections : ", io.of('/www').sockets.length);
+        io.of('/admin').emit('connections', io.of('/www').sockets.length);
 
-        if( currentsid === -1 ){
-            currentsid = socket.id;
-        }else{
-            socket.emit('updateStatus', true);
+        if( !laser.getDisable() ){
+
+            if( currentsid === -1 ){
+                currentsid = socket.id;
+            }else{
+                socket.emit('updateStatus', true);
+            }
         }
 
         // Timer
@@ -196,23 +201,27 @@ board.on("ready", function() {
 
         socket.on('disconnect', function(){
             console.log('user disconnected ', socket.id);
+            io.of('/admin').emit('connections', io.of('/www').sockets.length);
 
-            if( currentsid === socket.id ){
-                currentsid = -1;
+            if( !laser.getDisable() ){
 
-                //Update status for next client if exists
-                if( io.sockets.sockets.length > 0 ){
-                    var soc = io.sockets.sockets[0];
-                    currentsid = soc.conn.id;
-                    soc.emit('updateStatus', false);
+                if( currentsid === socket.id ){
+                    currentsid = -1;
+
+                    //Update status for next client if exists
+                    if( io.of('/www').sockets.length > 0 ){
+                        var soc = io.of('/www').sockets[0];
+                        currentsid = soc.conn.id;
+                        soc.emit('updateStatus', false);
+                    }
                 }
-            }
 
-            //Turn off laser if no connections
-            if( io.sockets.sockets.length === 0 ){
-                console.log('no connections, turn off laser');
-                laser.led.stop();
-                laser.led.off();
+                //Turn off laser if no connections
+                if( io.of('/www').sockets.length === 0 ){
+                    console.log('no connections, turn off laser');
+                    laser.led.stop();
+                    laser.led.off();
+                }
             }
         });
     });
@@ -220,6 +229,13 @@ board.on("ready", function() {
     //Admin Socket connection
 
     io.of('/admin').on('connection', function(socket){
+        io.of('/admin').emit('connections', io.of('/www').sockets.length);
+
+        io.of('/admin').emit('getSettings', {
+            camera: camera.isStopped,
+            controls: laser.getDisable(),
+            breaks: storage.getItem('breaks')
+        });
 
         socket.on('cameraOn', function(){
             camera.start();
@@ -227,6 +243,28 @@ board.on("ready", function() {
 
         socket.on('cameraOff', function(){
             camera.stop();
+        });
+
+        socket.on('controlsOn', function(){
+            laser.setDisable(false);
+
+            //Update status for first client if exists
+            if( io.of('/www').sockets.length > 0 ){
+                var soc = io.of('/www').sockets[0];
+                currentsid = soc.conn.id;
+                soc.emit('updateStatus', false);
+            }
+        });
+
+        socket.on('controlsOff', function(){
+            laser.setDisable(true);
+            currentsid = -1;
+            io.of('/www').emit('updateStatus', true);
+        });
+
+        socket.on('setBreaks', function(breaks){
+            var arr = breaks.split('\n');
+            storage.setItem('breaks', arr);
         });
 
     });

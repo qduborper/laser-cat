@@ -9,6 +9,7 @@
         <!-- Bootstrap -->
         <link href="/css/bootstrap.min.css" rel="stylesheet">
         <link href="/css/bootstrap-theme.min.css" rel="stylesheet">
+        <link href="/css/main.css" rel="stylesheet">
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -27,18 +28,42 @@
                 </div>
             </div>
 
+            <div class="alert alert-success js-message hide" role="alert">
+                <strong>Settings saved</strong>
+            </div>
+
             <div class="row">
                 <div class="col-xs-12">
                     <div class="page-header no-margin-top">
                         <h1 class="no-margin-top">Settings</h1>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <h3 class="no-margin-top">Connections</h3>
+                    <p class="lead red js-connections">0</p>
+                    <h3 class="no-margin-top">Breaks</h3>
+                    <textarea class="lead form-control js-breaks" rows="4" placeholder="Separate breaks per line (eg 20-8)"></textarea>
+                    <p class="text-right"><button class="btn btn-primary js-submit" type="submit">Save</button></p>
+                </div>
+                <div class="col-xs-12 col-md-6">
                     <h3 class="no-margin-top">Camera</h3>
-                    <p class="btn-group btn-group-justified" data-toggle="buttons" aria-label="Toto">
+                    <p class="lead btn-group btn-group-justified" data-toggle="buttons">
                         <label class="btn btn-primary js-camera-bt">
                             <input type="radio" name="options" id="cameraOff" autocomplete="off">Off
                         </label>
-                        <label class="btn btn-primary active js-camera-bt">
-                            <input type="radio" name="options" id="cameraOn" autocomplete="off" checked>On
+                        <label class="btn btn-primary js-camera-bt">
+                            <input type="radio" name="options" id="cameraOn" autocomplete="off">On
+                        </label>
+                    </p>
+                    <h3 class="no-margin-top">Controls</h3>
+                    <p class="lead btn-group btn-group-justified" data-toggle="buttons">
+                        <label class="btn btn-primary js-controls-bt">
+                            <input type="radio" name="options" id="controlsOff" autocomplete="off">Off
+                        </label>
+                        <label class="btn btn-primary js-controls-bt">
+                            <input type="radio" name="options" id="controlsOn" autocomplete="off">On
                         </label>
                     </p>
                 </div>

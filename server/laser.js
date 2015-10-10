@@ -10,6 +10,7 @@ var Laser = function(opts) {
         // laser instance
         _led = new five.Led(opts.pin),
         _transform = null,
+        _disabled = false,
         _targetCalibration = null,
         _servoCalibration = null;
 
@@ -22,6 +23,14 @@ var Laser = function(opts) {
 
     var _getCalibration = function(){
         return { target : _targetCalibration, servo: _servoCalibration };
+    };
+
+    var _setDisable = function(disabled){
+        _disabled = disabled;
+    };
+
+    var _getDisable = function(){
+        return _disabled;
     };
 
     var _target = function(x, y){
@@ -110,6 +119,8 @@ var Laser = function(opts) {
         servoCalibration: _servoCalibration,
         setCalibration: _setCalibration,
         getCalibration: _getCalibration,
+        setDisable: _setDisable,
+        getDisable: _getDisable,
         target: _target
     };
 };

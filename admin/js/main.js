@@ -4,10 +4,36 @@
     var socket = io('/admin'),
         autoMode = null;
 
-    //Camera
-    $('.js-camera-bt').on('click', function(e){
+    // Get settings
+    socket.on('getSettings', function(params){
+        var idCamera = params.camera ? 0 : 1,
+            idControls = params.controls ? 0 : 1;
+
+        //Camera
+        $('.js-camera-bt:eq('+idCamera+')').addClass('active').find('input').attr('checked', 'checked');
+        
+        //Controls
+        $('.js-controls-bt:eq('+idControls+')').addClass('active').find('input').attr('checked', 'checked');
+        
+        //Breaks
+        $('.js-breaks').val( params.breaks.join('\n') );
+    });
+
+    // Update connections
+    socket.on('connections', function(nb){
+        var $connections = $('.js-connections');
+        $connections.text(nb);
+    });
+
+    //Camera + controls
+    $('.js-camera-bt, .js-controls-bt').on('click', function(e){
         var id = $(this).find('input').attr('id');
         socket.emit(id);
+    });
+
+    //Submit
+    $('.js-submit').on('click', function(e){
+        socket.emit('setBreaks', $('.js-breaks').val());
     });
 
 })(jQuery);

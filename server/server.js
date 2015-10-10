@@ -162,41 +162,6 @@ board.on("ready", function() {
             servoY.move(Math.round(coord[1]));
         });
 
-        // For calibration
-
-        socket.on('updateAxis', function(data, fn){
-
-            if( data.axis === 'xaxis' ){
-                servoX.move( data.val );
-            }else{
-                servoY.move( data.val );
-            }
-
-            if( fn !== undefined ){
-                fn();
-            }
-        });
-
-        socket.on('getLaser', function(fn){
-            if( fn !== undefined ){
-                fn( { x: servoX.getAngle(), y: servoY.getAngle() } );
-            }
-        });
-
-        socket.on('getCalibration', function(fn){
-            if( fn !== undefined ){
-                fn( laser.getCalibration() );
-            }
-        });
-
-        socket.on('setCalibration', function(calibration, fn){
-            laser.setCalibration(calibration.target, calibration.servo);
-
-            if( fn !== undefined ){
-                fn();
-            }
-        });
-
         // Disconnection
 
         socket.on('disconnect', function(){
@@ -265,6 +230,52 @@ board.on("ready", function() {
         socket.on('setBreaks', function(breaks){
             var arr = breaks.split('\n');
             storage.setItem('breaks', arr);
+        });
+
+        // For calibration
+
+        socket.on('updateAxis', function(data, fn){
+
+            if( data.axis === 'xaxis' ){
+                servoX.move( data.val );
+            }else{
+                servoY.move( data.val );
+            }
+
+            if( fn !== undefined ){
+                fn();
+            }
+        });
+
+        socket.on('getLaser', function(fn){
+            if( fn !== undefined ){
+                fn( { x: servoX.getAngle(), y: servoY.getAngle() } );
+            }
+        });
+
+        socket.on('getCalibration', function(fn){
+            if( fn !== undefined ){
+                fn( laser.getCalibration() );
+            }
+        });
+
+        socket.on('setCalibration', function(calibration, fn){
+            laser.setCalibration(calibration.target, calibration.servo);
+
+            if( fn !== undefined ){
+                fn();
+            }
+        });
+
+        socket.on('laserMove', function(pos, fn){
+
+            var p = laser.target(pos.x, pos.y);
+            servoX.move(p.x);
+            servoY.move(p.y);
+
+            if( fn !== undefined ){
+                fn();
+            }
         });
 
     });

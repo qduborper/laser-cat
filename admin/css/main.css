@@ -20,6 +20,24 @@ body{
     bottom: 10px;
 }
 
+#video {
+    position: relative;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+}
+
+#video img, .img-thumbnail{
+    padding: 0;
+}
+
+#calibrateLayer {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 2;
+}
+
 .no-margin-top{
     margin-top: 0;
 }

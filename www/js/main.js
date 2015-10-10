@@ -18,7 +18,7 @@
         }
     });
 
-    //Video click
+    // Video click
     $('.js-stream').on('click', function(e){
 
         if(autoMode !== null){
@@ -33,13 +33,13 @@
         socket.emit('laserMove', { x: x, y: y });
     });
 
-    //Laser
+    // Laser
     $('.js-laser-bt').on('click', function(e){
         var id = $(this).find('input').attr('id');
         socket.emit(id);
     });
 
-    //Auto mode
+    // Auto mode
     $('.js-automode-bt').on('click', function(e){
         var interval = parseInt($(this).find('input').data('interval'), 10);
 

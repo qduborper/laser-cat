@@ -232,7 +232,7 @@ board.on("ready", function() {
         io.of('/admin').emit('connections', io.of('/www').sockets.length);
 
         io.of('/admin').emit('getSettings', {
-            camera: camera.isStopped,
+            camera: camera.getIsStopped(),
             controls: laser.getDisable(),
             breaks: storage.getItem('breaks')
         });

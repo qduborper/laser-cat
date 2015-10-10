@@ -44,6 +44,10 @@ var Camera = function(opts) {
         console.log('camera stopped');
     };
 
+    var _getIsStopped = function(){
+        return _isStopped;
+    };
+
     /**
      * Kill camera process
      */
@@ -73,7 +77,7 @@ var Camera = function(opts) {
     return {
         start: _start,
         stop: _stop,
-        isStopped: _isStopped
+        getIsStopped: _getIsStopped
     };
 };
 

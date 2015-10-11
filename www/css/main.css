@@ -20,18 +20,26 @@ body{
     bottom: 10px;
 }
 
-/*.video{
+.video{
     position: relative;
+    cursor: crosshair;
 }
 
 .video:before{
-    content: url("../images/chaton2.png");
+    /*content: url("../images/chaton2.png");*/
     display: block;
     position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.video img{
+    position: relative;
     z-index: 1;
-    right: 25px;
-    bottom: 5px;
-}*/
+}
 
 #video {
     position: relative;

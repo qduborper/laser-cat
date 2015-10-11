@@ -4,6 +4,15 @@
     var socket = io('/www'),
         autoMode = null;
 
+    // Get settings
+    socket.on('getSettings', function(params){
+
+        //Camera disabled
+        if( params.camera ){
+            $('.video img').attr('src', '/images/nocamera.png');
+        }
+    });
+
     // Update status
     socket.on('updateStatus', function(ko){
         var $status = $('.js-status-ko'),

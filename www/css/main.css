@@ -27,6 +27,7 @@ body{
 
 .video:before{
     /*content: url("../images/chaton2.png");*/
+    content: "";
     display: block;
     position: absolute;
     z-index: 2;

@@ -200,7 +200,10 @@ board.on("ready", function() {
 
         socket.on('cameraOn', function(){
             camera.start();
-            io.of('/www').emit('updateCamera', false);
+
+            setTimeout(function(){
+                io.of('/www').emit('updateCamera', false);
+            }, 5000);
         });
 
         socket.on('cameraOff', function(){

@@ -5,7 +5,7 @@
 
     // Get settings
     socket.on('getSettings', function(params){
-        var idLaser = params.laser ? 0 : 1,
+        var idLaser = params.laser ? 1 : 0,
             idCamera = params.camera ? 0 : 1,
             idControls = params.controls ? 0 : 1;
 

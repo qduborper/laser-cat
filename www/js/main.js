@@ -4,11 +4,13 @@
     var socket = io('/www'),
         autoMode = null;
 
-    // Get settings
-    socket.on('getSettings', function(params){
+    // Update camera
+    socket.on('updateCamera', function(nocamera){
 
         //If camera connected
-        if( !params.camera ){
+        if( nocamera ){
+            $('.video img').attr('src', '/images/nocamera.png');
+        }else{
             $('.video img').attr('src', 'http://laser-cat.ddns.net:1234');
         }
     });

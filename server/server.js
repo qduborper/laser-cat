@@ -94,11 +94,7 @@ board.on("ready", function() {
 
         // Events
 
-        socket.emit('getSettings', {
-            camera: camera.getIsStopped(),
-            controls: laser.getDisable(),
-            breaks: storage.getItem('breaks')
-        });
+        socket.emit('updateCamera', camera.getIsStopped()); //Camera status
 
         socket.on('laserOn', function(){
 
@@ -204,10 +200,12 @@ board.on("ready", function() {
 
         socket.on('cameraOn', function(){
             camera.start();
+            io.of('/www').emit('updateCamera', false);
         });
 
         socket.on('cameraOff', function(){
             camera.stop();
+            io.of('/www').emit('updateCamera', true);
         });
 
         socket.on('controlsOn', function(){

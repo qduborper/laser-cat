@@ -5,8 +5,12 @@
 
     // Get settings
     socket.on('getSettings', function(params){
-        var idCamera = params.camera ? 0 : 1,
+        var idLaser = params.laser ? 0 : 1,
+            idCamera = params.camera ? 0 : 1,
             idControls = params.controls ? 0 : 1;
+
+        //Laser
+        $('.js-laser-bt:eq('+idLaser+')').addClass('active').find('input').attr('checked', 'checked');
 
         //Camera
         $('.js-camera-bt:eq('+idCamera+')').addClass('active').find('input').attr('checked', 'checked');
@@ -26,13 +30,8 @@
         $connections.text(nb);
     });
 
-    //Camera + controls
-    $('.js-camera-bt').on('click', function(e){
-        var id = $(this).find('input').attr('id');
-        socket.emit(id);
-    });
-
-    $('.js-controls-bt').on('click', function(e){
+    //Laser + Camera + controls
+    $('.js-bt').on('click', function(e){
         var id = $(this).find('input').attr('id');
         socket.emit(id);
     });

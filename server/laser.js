@@ -12,7 +12,28 @@ var Laser = function(opts) {
         _transform = null,
         _disabled = false,
         _targetCalibration = null,
-        _servoCalibration = null;
+        _servoCalibration = null,
+        _isOn = false;
+
+    var _on = function(){
+        _led.stop();
+        _led.on();
+        _isOn = true;
+    };
+
+    var _off = function(){
+        _led.stop();
+        _led.off();
+        _isOn = false;
+    };
+
+    var _blink = function(){
+        _led.blink(500);
+    };
+
+    var _getIsOn = function(){
+        return _isOn;
+    };
 
     var _setCalibration = function(targetCalibration, servoCalibration){
         _targetCalibration = targetCalibration;
@@ -114,7 +135,10 @@ var Laser = function(opts) {
     _generateTransform();
 
     return {
-        led: _led,
+        on: _on,
+        off: _off,
+        blink: _blink,
+        getIsOn: _getIsOn,
         targetCalibration: _targetCalibration,
         servoCalibration: _servoCalibration,
         setCalibration: _setCalibration,

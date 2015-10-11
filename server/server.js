@@ -101,8 +101,7 @@ board.on("ready", function() {
             if( socket.id !== currentsid )
                 return;
 
-            laser.led.stop();
-            laser.led.on();
+            laser.on();
         });
 
         socket.on('laserOff', function(){
@@ -110,8 +109,7 @@ board.on("ready", function() {
             if( socket.id !== currentsid )
                 return;
 
-            laser.led.stop();
-            laser.led.off();
+            laser.off();
         });
 
         socket.on('laserBlink', function(){
@@ -119,7 +117,7 @@ board.on("ready", function() {
             if( socket.id !== currentsid )
                 return;
 
-            laser.led.blink(500);
+            laser.blink(500);
         });
 
         socket.on('laserMove', function(pos, fn){
@@ -181,8 +179,7 @@ board.on("ready", function() {
             //Turn off laser if no connections
             if( io.of('/www').sockets.length === 0 ){
                 console.log('no connections, turn off laser');
-                laser.led.stop();
-                laser.led.off();
+                laser.off();
             }
         });
     });
@@ -193,6 +190,7 @@ board.on("ready", function() {
         io.of('/admin').emit('connections', io.of('/www').sockets.length);
 
         socket.emit('getSettings', {
+            laser: laser.getIsOn(),
             camera: camera.getIsStopped(),
             controls: laser.getDisable(),
             breaks: storage.getItem('breaks')
@@ -266,6 +264,14 @@ board.on("ready", function() {
             if( fn !== undefined ){
                 fn();
             }
+        });
+
+        socket.on('laserOn', function(){
+            laser.on();
+        });
+
+        socket.on('laserOff', function(){
+            laser.off();
         });
 
         socket.on('laserMove', function(pos, fn){

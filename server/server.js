@@ -81,13 +81,10 @@ board.on("ready", function() {
         console.log("io connections : ", io.of('/www').sockets.length);
         io.of('/admin').emit('connections', io.of('/www').sockets.length);
 
-        if( !laser.getDisable() ){
-
-            if( currentsid === -1 ){
-                currentsid = socket.id;
-            }else{
-                socket.emit('updateStatus', true);
-            }
+        if( !laser.getDisable() && currentsid === -1 ){
+            currentsid = socket.id;
+        }else{
+            socket.emit('updateStatus', true);
         }
 
         // Timer
@@ -168,25 +165,22 @@ board.on("ready", function() {
             console.log('user disconnected ', socket.id);
             io.of('/admin').emit('connections', io.of('/www').sockets.length);
 
-            if( !laser.getDisable() ){
+            if( currentsid === socket.id ){
+                currentsid = -1;
 
-                if( currentsid === socket.id ){
-                    currentsid = -1;
-
-                    //Update status for next client if exists
-                    if( io.of('/www').sockets.length > 0 ){
-                        var soc = io.of('/www').sockets[0];
-                        currentsid = soc.conn.id;
-                        soc.emit('updateStatus', false);
-                    }
+                //Update status for next client if exists
+                if( !laser.getDisable() && io.of('/www').sockets.length > 0 ){
+                    var soc = io.of('/www').sockets[0];
+                    currentsid = soc.conn.id;
+                    soc.emit('updateStatus', false);
                 }
+            }
 
-                //Turn off laser if no connections
-                if( io.of('/www').sockets.length === 0 ){
-                    console.log('no connections, turn off laser');
-                    laser.led.stop();
-                    laser.led.off();
-                }
+            //Turn off laser if no connections
+            if( io.of('/www').sockets.length === 0 ){
+                console.log('no connections, turn off laser');
+                laser.led.stop();
+                laser.led.off();
             }
         });
     });

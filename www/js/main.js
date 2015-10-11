@@ -7,9 +7,9 @@
     // Get settings
     socket.on('getSettings', function(params){
 
-        //Camera disabled
-        if( params.camera ){
-            $('.video img').attr('src', '/images/nocamera.png');
+        //If camera connected
+        if( !params.camera ){
+            $('.video img').attr('src', 'http://laser-cat.ddns.net:1234');
         }
     });
 

@@ -14,6 +14,9 @@ board.on("ready", function() {
         app = express(),
         server = require('http').Server(app),
         io = require('socket.io')(server),
+        socketio_jwt   = require("socketio-jwt"),
+        jwt = require('jsonwebtoken'),
+        jwt_secret = 'piplaylasercatarduinoprojectraspberry',
         turf = require('turf-random'),
         storage = require('node-persist'),
         currentsid = -1,
@@ -27,15 +30,24 @@ board.on("ready", function() {
     server.listen(80);
     app.use('/', express.static(path.resolve(__dirname + '/../www')));
     app.use('/admin', auth.connect(basic));
-    app.use('/admin', express.static(path.resolve(__dirname + '/../admin')));
-
-    app.get('/', function (req, res) {
-      res.sendFile('index.html');
-    });
 
     app.get('/admin', function (req, res) {
-      res.sendFile('index.html');
+        console.log('login admin : ', req.user);
+
+        var profile = { user: req.user };
+
+        // We are sending the profile inside the token
+        var token = jwt.sign(profile, jwt_secret);
+
+        if( req.query.token === undefined || req.query.token !== token ){
+            res.redirect('/admin?token='+token);
+        }else{
+            res.sendFile(path.resolve(__dirname + '/../admin/index.html'));
+        }
+
     });
+
+    app.use('/admin', express.static(path.resolve(__dirname + '/../admin')));
 
     // Camera
     var camera = new Camera();
@@ -186,14 +198,23 @@ board.on("ready", function() {
 
     //Admin Socket connection
 
-    io.of('/admin').on('connection', function(socket){
+    io.of('/admin').on('connection', socketio_jwt.authorize({
+        secret: jwt_secret,
+        timeout: 15000 // 15 seconds to send the authentication message
+    })).on('authenticated', function(socket) {
+        
+        //this socket is authenticated, we are good to handle more events from it.
+        console.log(socket.decoded_token.user, 'connected');
+
         io.of('/admin').emit('connections', io.of('/www').sockets.length);
 
-        socket.emit('getSettings', {
-            laser: laser.getIsOn(),
-            camera: camera.getIsStopped(),
-            controls: laser.getDisable(),
-            breaks: storage.getItem('breaks')
+        socket.on('getSettings', function(cb){
+            cb({
+                laser: laser.getIsOn(),
+                camera: camera.getIsStopped(),
+                controls: laser.getDisable(),
+                breaks: storage.getItem('breaks')
+            });
         });
 
         socket.on('cameraOn', function(){
@@ -284,7 +305,6 @@ board.on("ready", function() {
                 fn();
             }
         });
-
     });
 
 });

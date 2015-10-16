@@ -4,24 +4,35 @@
     var autoMode = null;
 
     // Get settings
-    socket.on('getSettings', function(params){
-        var idLaser = params.laser ? 1 : 0,
-            idCamera = params.camera ? 0 : 1,
-            idControls = params.controls ? 0 : 1;
+    socket.on('connect', function(){
 
-        //Laser
-        $('.js-laser-bt:eq('+idLaser+')').addClass('active').find('input').attr('checked', 'checked');
+        socket.on('authenticated', function () {
+          
+            console.log('authenticated !');
 
-        //Camera
-        $('.js-camera-bt:eq('+idCamera+')').addClass('active').find('input').attr('checked', 'checked');
-        
-        //Controls
-        $('.js-controls-bt:eq('+idControls+')').addClass('active').find('input').attr('checked', 'checked');
-        
-        //Breaks
-        if( params.breaks !== undefined ){
-            $('.js-breaks').val( params.breaks.join('\n') );
-        }
+            socket.emit('getSettings', function(params){
+
+                var idLaser = params.laser ? 1 : 0,
+                    idCamera = params.camera ? 0 : 1,
+                    idControls = params.controls ? 0 : 1;
+
+                //Laser
+                $('.js-laser-bt:eq('+idLaser+')').addClass('active').find('input').attr('checked', 'checked');
+
+                //Camera
+                $('.js-camera-bt:eq('+idCamera+')').addClass('active').find('input').attr('checked', 'checked');
+                
+                //Controls
+                $('.js-controls-bt:eq('+idControls+')').addClass('active').find('input').attr('checked', 'checked');
+                
+                //Breaks
+                if( params.breaks !== undefined ){
+                    $('.js-breaks').val( params.breaks.join('\n') );
+                }
+            });
+
+        })
+        .emit('authenticate', {token: token}); //send the jwt
     });
 
     // Update connections

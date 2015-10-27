@@ -38,7 +38,7 @@ board.on("ready", function() {
 
         // We are sending the profile inside the token
         var token = jwt.sign(profile, jwt_secret, {expiresInMinutes: 60}),
-            local = (req.query.local !== undefined) ? 'local='req.query.local+'&' : '';
+            local = (req.query.local !== undefined) ? 'local='+req.query.local+'&' : '';
 
         if( req.query.token === undefined || req.query.token !== token ){
             res.redirect('/admin?'+local+'token='+token);

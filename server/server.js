@@ -223,13 +223,15 @@ board.on("ready", function() {
             camera.start();
 
             setTimeout(function(){
-                io.emit('updateCamera', false);
+                io.of('/admin').emit('updateCamera', false);
+                io.of('/www').emit('updateCamera', false);
             }, 5000);
         });
 
         socket.on('cameraOff', function(){
             camera.stop();
-            io.emit('updateCamera', true);
+            io.of('/admin').emit('updateCamera', true);
+            io.of('/www').emit('updateCamera', true);
         });
 
         socket.on('controlsOn', function(){

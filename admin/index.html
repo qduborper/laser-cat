@@ -34,7 +34,9 @@
             }
 
             var socket = io('/admin'),
-                token = getQueryVariable('token');
+                token = getQueryVariable('token'),
+                isLocal = getQueryVariable('local') !== '' ? true : false,
+                cameraStream = isLocal ? 'http://'+getQueryVariable('local')+':1234' : 'http://laser-cat.ddns.net:1234';
         </script>
     </head>
     <body>
@@ -108,7 +110,7 @@
                 <div class="col-md-8">
                     <div id="video">
                         <!-- Set the MJPEG video stream URL in the image source below -->
-                        <img src="http://laser-cat.ddns.net:1234"  class="img-thumbnail" />
+                        <img src="/images/nocamera.png"  class="img-thumbnail" />
                         <div id="calibrateLayer"></div>
                     </div>
                 </div>

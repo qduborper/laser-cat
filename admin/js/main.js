@@ -34,6 +34,17 @@
         })
         .emit('authenticate', {token: token}); //send the jwt
     });
+    
+    // Update camera
+    socket.on('updateCamera', function(nocamera){
+
+        //If camera connected
+        if( nocamera ){
+            $('#video img').attr('src', '/images/nocamera.png');
+        }else{
+            $('#video img').attr('src', cameraStream);
+        }
+    });
 
     // Update connections
     socket.on('connections', function(nb){

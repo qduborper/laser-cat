@@ -207,6 +207,7 @@ board.on("ready", function() {
         console.log(socket.decoded_token.user, 'connected');
 
         io.of('/admin').emit('connections', io.of('/www').sockets.length);
+        socket.emit('updateCamera', camera.getIsStopped()); //Camera status
 
         socket.on('getSettings', function(cb){
             cb({
@@ -221,13 +222,13 @@ board.on("ready", function() {
             camera.start();
 
             setTimeout(function(){
-                io.of('/www').emit('updateCamera', false);
+                io.emit('updateCamera', false);
             }, 5000);
         });
 
         socket.on('cameraOff', function(){
             camera.stop();
-            io.of('/www').emit('updateCamera', true);
+            io.emit('updateCamera', true);
         });
 
         socket.on('controlsOn', function(){

@@ -2,7 +2,9 @@
     'use strict';
 
     var socket = io('/www'),
-        autoMode = null;
+        autoMode = null,
+        isLocal = getQueryVariable('local') !== '' ? true : false,
+        cameraStream = isLocal ? 'http://'+getQueryVariable('local')+':1234' : 'http://laser-cat.ddns.net:1234';
 
     // Update camera
     socket.on('updateCamera', function(nocamera){
@@ -11,7 +13,7 @@
         if( nocamera ){
             $('.video img').attr('src', '/images/nocamera.png');
         }else{
-            $('.video img').attr('src', 'http://laser-cat.ddns.net:1234');
+            $('.video img').attr('src', cameraStream);
         }
     });
 
@@ -63,6 +65,20 @@
             }, interval);
         }
     });
+
+    // Utils
+    var getQueryVariable = function(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split('&');
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split('=');
+            if (decodeURIComponent(pair[0]) == variable) {
+                return decodeURIComponent(pair[1]);
+            }
+        }
+        console.log('Query variable %s not found', variable);
+        return '';
+    }
 
 
 })(jQuery);

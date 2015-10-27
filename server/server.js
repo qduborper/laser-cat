@@ -40,7 +40,7 @@ board.on("ready", function() {
         var token = jwt.sign(profile, jwt_secret, {expiresInMinutes: 60});
 
         if( req.query.token === undefined || req.query.token !== token ){
-            res.redirect('/admin?token='+token);
+            res.redirect('/admin?'+(req.query.local !== undefined) ? req.query.local : ''+'token='+token);
         }else{
             res.sendFile(path.resolve(__dirname + '/../admin/index.html'));
         }

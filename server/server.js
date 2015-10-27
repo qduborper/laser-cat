@@ -37,10 +37,11 @@ board.on("ready", function() {
         var profile = { user: req.user };
 
         // We are sending the profile inside the token
-        var token = jwt.sign(profile, jwt_secret, {expiresInMinutes: 60});
+        var token = jwt.sign(profile, jwt_secret, {expiresInMinutes: 60}),
+            (req.query.local !== undefined) ? 'local='req.query.local+'&' : '';
 
         if( req.query.token === undefined || req.query.token !== token ){
-            res.redirect('/admin?'+(req.query.local !== undefined) ? req.query.local : ''+'token='+token);
+            res.redirect('/admin?'+local+'token='+token);
         }else{
             res.sendFile(path.resolve(__dirname + '/../admin/index.html'));
         }

@@ -36,7 +36,7 @@
             var socket = io('/admin'),
                 token = getQueryVariable('token'),
                 isLocal = getQueryVariable('local') !== '' ? true : false,
-                cameraStream = isLocal ? 'http://'+getQueryVariable('local')+':1234' : 'http://laser-cat.ddns.net:81';
+                cameraStream = isLocal ? 'http://'+getQueryVariable('local')+':81' : 'http://laser-cat.ddns.net:81';
         </script>
     </head>
     <body>

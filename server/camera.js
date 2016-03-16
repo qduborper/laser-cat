@@ -16,7 +16,7 @@ var Camera = function(opts) {
 
         if(!_isStopped) return; 
 
-        cameraCmd = exec("cvlc v4l2:///dev/video0:chroma=mjpg:width=750:height=422:fps=25 --sout '#standard{access=http{mime=multipart/x-mixed-replace;boundary=--7b3cc56e5f51db803f790dad720ed50a},mux=mpjpeg,dst=:1234}' -vvv");
+        cameraCmd = exec("cvlc v4l2:///dev/video0:chroma=mjpg:width=750:height=422:fps=25 --sout '#standard{access=http{mime=multipart/x-mixed-replace;boundary=--7b3cc56e5f51db803f790dad720ed50a},mux=mpjpeg,dst=:81}' -vvv");
         _isStopped = false;
         console.log('camera started');
 

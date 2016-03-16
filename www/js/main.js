@@ -4,7 +4,7 @@
     var socket = io('/www'),
         autoMode = null,
         isLocal = getQueryVariable('local') !== '' ? true : false,
-        cameraStream = isLocal ? 'http://'+getQueryVariable('local')+':1234' : 'http://laser-cat.ddns.net:1234';
+        cameraStream = isLocal ? 'http://'+getQueryVariable('local')+':1234' : 'http://laser-cat.ddns.net:81';
 
     // Update camera
     socket.on('updateCamera', function(nocamera){

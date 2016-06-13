@@ -1,5 +1,8 @@
-var five = require("johnny-five"),
-    board = new five.Board();
+var raspi = require('raspi-io'),
+    five = require("johnny-five"),
+    board = new five.Board(
+        io: new raspi()
+    );
 
 board.on("ready", function() {
     console.log("board ready");
@@ -59,7 +62,7 @@ board.on("ready", function() {
             minPos: 0,
             maxPos: 180,
             offset: 45,
-            pin: 3,
+            pin: 'GPIO23',
             range: [0,180],
             invert: false
         }),
@@ -67,12 +70,12 @@ board.on("ready", function() {
             minPos: 0,
             maxPos: 45,
             offset: 40,
-            pin: 11,
+            pin: 'GPIO12',
             range: [0,45],
             invert: false
         }),
         laser = new Laser({
-            pin: 4
+            pin: 'GPIO21'
         });
 
     // Timer callback

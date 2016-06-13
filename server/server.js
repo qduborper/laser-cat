@@ -62,7 +62,7 @@ board.on("ready", function() {
             minPos: 0,
             maxPos: 180,
             offset: 45,
-            pin: 'GPIO23',
+            pin: 'P1-12',
             range: [0,180],
             invert: false
         }),
@@ -70,12 +70,12 @@ board.on("ready", function() {
             minPos: 0,
             maxPos: 45,
             offset: 40,
-            pin: 'GPIO12',
+            pin: 'P1-32',
             range: [0,45],
             invert: false
         }),
         laser = new Laser({
-            pin: 'GPIO21'
+            pin: 'P1-37'
         });
 
     // Timer callback

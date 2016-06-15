@@ -40,6 +40,7 @@ body{
 .video img{
     position: relative;
     z-index: 1;
+    width: 100%;
 }
 
 #video {
@@ -51,6 +52,7 @@ body{
 
 #video img, .img-thumbnail{
     padding: 0;
+    width: 100%;
 }
 
 #calibrateLayer {

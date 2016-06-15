@@ -61,15 +61,15 @@ board.on("ready", function() {
     var servoX = new Joint({
             minPos: 0,
             maxPos: 180,
-            offset: 45,
-            pin: 'P1-32',
+            offset: 70,
+            pin: 'P1-33',
             range: [0,180],
             invert: false
         }),
         servoY = new Joint({
             minPos: 0,
-            maxPos: 45,
-            offset: 40,
+            maxPos: 60,
+            offset: 1,
             pin: 'P1-12',
             range: [0,45],
             invert: false

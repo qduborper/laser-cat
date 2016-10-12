@@ -8,7 +8,11 @@ var Laser = function(opts) {
         numeric = require('./lib/numeric-1.2.6.min'),
         luqr = require('luqr').luqr,
         // laser instance
-        _led = new five.Led(opts.pin),
+        _led = new five.Led({
+            pin: opts.pin,
+            address: 0x40,
+            controller: "PCA9685"
+        }),
         _transform = null,
         _disabled = false,
         _targetCalibration = null,

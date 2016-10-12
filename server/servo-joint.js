@@ -10,6 +10,8 @@ var Joint = function(opts) {
         maxPos = opts.maxPos,
         // servo instance that handle this joint
         _servo = new five.Servo({
+            address: 0x40,
+            controller: "PCA9685",
             pin: opts.pin,
             range: opts.range,
             offset: opts.offset,

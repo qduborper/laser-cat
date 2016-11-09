@@ -74,7 +74,7 @@ var Laser = function(opts) {
     var _loadCalibration = function(){
         var calib = storage.getItem('calibration');
 
-        if( calib !== undefined ){
+        if( calib !== undefined && calib.target !== undefined && calib.servo !== undefined ){
             _targetCalibration = calib.target;
             _servoCalibration = calib.servo;
             console.log('load calibration', _targetCalibration, _servoCalibration);

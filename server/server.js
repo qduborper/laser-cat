@@ -40,7 +40,7 @@ board.on("ready", function() {
         var profile = { user: req.user };
 
         // We are sending the profile inside the token
-        var token = jwt.sign(profile, jwt_secret, {expiresInMinutes: 60}),
+        var token = jwt.sign(profile, jwt_secret, { expiresIn : 60*60*24 }),
             local = (req.query.local !== undefined) ? 'local='+req.query.local+'&' : '';
 
         if( req.query.token === undefined || req.query.token !== token ){

@@ -61,21 +61,21 @@ board.on("ready", function() {
     var servoX = new Joint({
             minPos: 0,
             maxPos: 180,
-            offset: 70,
-            pin: 8,
+            offset: 0,
+            pin: 12,
             range: [0,180],
             invert: false
         }),
         servoY = new Joint({
             minPos: 0,
-            maxPos: 60,
-            offset: 1,
-            pin: 9,
-            range: [0,45],
+            maxPos: 90,
+            offset: 0,
+            pin: 13,
+            range: [0,90],
             invert: false
         }),
         laser = new Laser({
-            pin: 11
+            pin: 'P1-36'
         });
 
     // Timer callback

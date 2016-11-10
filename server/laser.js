@@ -67,12 +67,12 @@ var Laser = function(opts) {
     };
 
     var _saveCalibration = function(){
-        storage.setItem('calibration', { target: _targetCalibration, servo: _servoCalibration });
+        storage.setItemSync('calibration', { target: _targetCalibration, servo: _servoCalibration });
         console.log('save calibration', _targetCalibration, _servoCalibration);
     };
 
     var _loadCalibration = function(){
-        var calib = storage.getItem('calibration');
+        var calib = storage.getItemSync('calibration');
 
         if( calib !== undefined && calib.target !== undefined && calib.servo !== undefined ){
             _targetCalibration = calib.target;

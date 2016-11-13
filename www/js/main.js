@@ -3,8 +3,7 @@
 
     var socket = io('/www'),
         autoMode = null,
-        isLocal = getQueryVariable('local') !== '' ? true : false,
-        cameraStream = isLocal ? 'http://'+getQueryVariable('local')+':81' : 'http://laser-cat.ddns.net:81';
+        cameraStream = 'http://'+window.location.hostname+':81';
 
     // Update camera
     socket.on('updateCamera', function(nocamera){
@@ -68,18 +67,3 @@
 
 
 })(jQuery);
-
-
-// Utils
-function getQueryVariable(variable) {
-    var query = window.location.search.substring(1);
-    var vars = query.split('&');
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split('=');
-        if (decodeURIComponent(pair[0]) == variable) {
-            return decodeURIComponent(pair[1]);
-        }
-    }
-    console.log('Query variable %s not found', variable);
-    return '';
-}

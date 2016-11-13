@@ -32,10 +32,10 @@
                 console.log('Query variable %s not found', variable);
                 return '';
             }
-        
+
             var socket = io('/admin'),
                 token = getQueryVariable('token'),
-                cameraStream = isLocal ? 'http://'+window.location.hostname+':81';
+                cameraStream = 'http://'+window.location.hostname+':81';
         </script>
     </head>
     <body>

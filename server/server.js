@@ -72,7 +72,7 @@ board.on("ready", function() {
             offset: 0,
             pin: 13,
             range: [0,90],
-            invert: false
+            invert: true
         }),
         laser = new Laser({
             pin: 'P1-36'

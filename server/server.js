@@ -68,10 +68,10 @@ board.on("ready", function() {
         }),
         servoY = new Joint({
             minPos: 0,
-            maxPos: 90,
+            maxPos: 60,
             offset: 0,
             pin: 13,
-            range: [0,90],
+            range: [0,60],
             invert: true
         }),
         laser = new Laser({

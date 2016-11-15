@@ -20,8 +20,8 @@ var Gun = function(opts) {
      * @return {void} 
      */
     var _shot = function(){
-        servo.move(90);
-        servo.move(0);
+        trigger.move(90);
+        trigger.move(0);
     };
 
     return {

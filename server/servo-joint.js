@@ -10,12 +10,13 @@ var Joint = function(opts) {
             pin: opts.pin,
             range: opts.range,
             offset: opts.offset,
-            center: opts.center || true,
             invert: opts.invert
         };
 
     if( opts.startAt ){
         options.startAt = opts.startAt;
+    }else{
+        options.center = true;
     }
     
     var minPos = opts.minPos, //lowest hand postion tracked

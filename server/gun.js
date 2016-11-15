@@ -3,7 +3,7 @@
  */
 var Gun = function(opts) {
 
-    var Joint = require('../servo-joint'),
+    var Joint = require('./servo-joint'),
         trigger = new Joint({
             minPos: 0,
             maxPos: 180,

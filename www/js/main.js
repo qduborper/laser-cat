@@ -51,6 +51,11 @@
         socket.emit(id);
     });
 
+    // Shot
+    $('.js-shot-bt').on('click', function(e){
+        socket.emit('shot');
+    });
+
     // Auto mode
     $('.js-automode-bt').on('click', function(e){
         var interval = parseInt($(this).find('input').data('interval'), 10);

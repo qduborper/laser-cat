@@ -11,7 +11,7 @@ var Gun = function(opts) {
             pin: 11,
             range: [0,180],
             center: false,
-            invert: false,
+            invert: true,
             startAt: 0
         });
 

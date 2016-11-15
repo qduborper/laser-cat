@@ -25,6 +25,7 @@ board.on("ready", function() {
         currentsid = -1,
         Joint = require('./servo-joint'),
         Laser = require('./laser'),
+        Gun = require('./gun'),
         Timer = require('./timer'),
         Camera = require('./camera'),
         timerCallback = null;
@@ -76,7 +77,9 @@ board.on("ready", function() {
         }),
         laser = new Laser({
             pin: 'P1-36'
-        });
+        }),
+        gun = new Gun()
+    ;
 
     // Timer callback
     /*timerCallback = function(e){
@@ -148,6 +151,14 @@ board.on("ready", function() {
             if( fn !== undefined ){
                 fn();
             }
+        });
+
+        socket.on('shot', function(){
+
+            if( socket.id !== currentsid )
+                return;
+
+            gun.shot();
         });
 
         socket.on('moveToRandomPosition', function(){

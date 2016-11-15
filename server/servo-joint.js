@@ -4,24 +4,20 @@
 var Joint = function(opts) {
 
     var five = require('johnny-five'),
-        options = {
+        //lowest hand postion tracked
+        minPos = opts.minPos,
+        // highest position tracked
+        maxPos = opts.maxPos,
+        // servo instance that handle this joint
+        _servo = new five.Servo({
             address: 0x40,
             controller: "PCA9685",
             pin: opts.pin,
             range: opts.range,
             offset: opts.offset,
+            center: opts.center !== undefined ? opts.center || true,
             invert: opts.invert
-        };
-
-    if( opts.startAt ){
-        options.startAt = opts.startAt;
-    }else{
-        options.center = true;
-    }
-    
-    var minPos = opts.minPos, //lowest hand postion tracked
-        maxPos = opts.maxPos, // highest position tracked
-        _servo = new five.Servo(options); // servo instance that handle this joint
+        });
 
     /**
      * Get servo angle value

@@ -20,8 +20,11 @@ var Gun = function(opts) {
      * @return {void} 
      */
     var _shot = function(){
-        trigger.move(90);
-        trigger.move(0);
+        trigger.move(120);
+
+        setTimeout(() => {
+            trigger.move(0);
+        }, 1000);
     };
 
     return {

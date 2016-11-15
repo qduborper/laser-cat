@@ -15,7 +15,7 @@ var Joint = function(opts) {
             pin: opts.pin,
             range: opts.range,
             offset: opts.offset,
-            center: opts.center !== undefined ? opts.center || true,
+            center: opts.center !== undefined ? opts.center : true,
             invert: opts.invert
         });
 

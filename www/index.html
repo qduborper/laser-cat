@@ -10,13 +10,6 @@
         <link href="/css/bootstrap.min.css" rel="stylesheet">
         <link href="/css/bootstrap-theme.min.css" rel="stylesheet">
         <link href="/css/main.css" rel="stylesheet">
-
-        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-            <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
     </head>
     <body>
 
@@ -39,18 +32,27 @@
                         <h1 class="no-margin-top">Settings</h1>
                     </div>
                     <h3 class="no-margin-top">Laser</h3>
-                    <p class="btn-group btn-group-justified" data-toggle="buttons" aria-label="Toto">
+                    <p class="btn-group btn-group-justified" data-toggle="buttons" aria-label="Laser">
                         <label class="btn btn-primary active js-laser-bt">
-                            <input type="radio" name="options" id="laserOff" autocomplete="off" checked>Off
+                            <input type="radio" name="options" id="laser.off" autocomplete="off" checked>Off
                         </label>
                         <label class="btn btn-primary js-laser-bt">
-                            <input type="radio" name="options" id="laserOn" autocomplete="off">On
+                            <input type="radio" name="options" id="laser.on" autocomplete="off">On
                         </label>
                         <label class="btn btn-primary js-laser-bt">
-                            <input type="radio" name="options" id="laserBlink" autocomplete="off">Blink
+                            <input type="radio" name="options" id="laser.blink" autocomplete="off">Blink
                         </label>
                     </p>
-                    <h3 class="no-margin-top">Auto mode</h3>
+                    <h3 class="no-margin-top">Shot</h3>
+                    <p class="btn-group btn-group-justified" data-toggle="buttons" aria-label="Shot">
+                        <label class="btn btn-primary js-automode-bt">
+                            <input type="radio" name="shot1" id="gun.shot1" autocomplete="off">Shot 1
+                        </label>
+                        <label class="btn btn-primary js-automode-bt">
+                            <input type="radio" name="shot2" id="gun.shot2" autocomplete="off">Shot 2
+                        </label>
+                    </p>
+                    <!-- <h3 class="no-margin-top">Auto mode</h3>
                     <p class="btn-group btn-group-justified" data-toggle="buttons" aria-label="Toto">
                         <label class="btn btn-primary active js-automode-bt">
                             <input data-interval="0" type="radio" name="options" autocomplete="off" checked>Off
@@ -61,11 +63,7 @@
                         <label class="btn btn-primary js-automode-bt">
                             <input data-interval="1500" type="radio" name="options" autocomplete="off">1.5s
                         </label>
-                    </p>
-                    <h3 class="no-margin-top">Shot</h3>
-                    <p>
-                    <button class="btn btn-primary js-shot-bt">Trigger shot</button>
-                    </p>
+                    </p> -->
                 </div>
                 <div class="col-xs-12 col-md-8 col-md-pull-4 video js-stream"> 
                     <img src="/images/nocamera.png" class="img-thumbnail">

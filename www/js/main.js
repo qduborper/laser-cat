@@ -6,7 +6,7 @@
         cameraStream = 'http://'+window.location.hostname+':81';
 
     // Update camera
-    socket.on('updateCamera', function(nocamera){
+    socket.on('camera.update', function(nocamera){
 
         //If camera connected
         if( nocamera ){
@@ -17,7 +17,7 @@
     });
 
     // Update status
-    socket.on('updateStatus', function(ko){
+    socket.on('status.update', function(ko){
         var $status = $('.js-status-ko'),
             $inputs = $('.btn');
 
@@ -42,18 +42,17 @@
             x = e.offsetX * 750 / imgWidth,
             y = e.offsetY * 422 / imgHeight;
 
-        socket.emit('laserMove', { x: x, y: y });
+        socket.emit('laser.move', { pos : { x: x, y: y } });
     });
 
     // Laser
     $('.js-laser-bt').on('click', function(e){
-        var id = $(this).find('input').attr('id');
-        socket.emit(id);
+        socket.emit($(this).find('input').attr('id'));
     });
 
     // Shot
     $('.js-shot-bt').on('click', function(e){
-        socket.emit('shot');
+        socket.emit($(this).find('input').attr('id'));
     });
 
     // Auto mode
@@ -65,9 +64,47 @@
 
         if( interval >= 750 ){
             autoMode = setInterval(function(){
-                socket.emit('moveToRandomPosition');
+                socket.emit('laser.moveToRandomPosition');
             }, interval);
         }
+    });
+
+    // Robot
+    var isKeyDown = false;
+    $(document).on("keydown keyup", function(e) {
+
+        if( e.type === "keydown" ){
+
+            if( isKeyDown ) return;
+
+            isKeyDown = true;
+
+            switch(e.which) {
+                case 37: // left
+                socket.emit('robot.left');
+                break;
+
+                case 38: // up
+                socket.emit('robot.straight');
+                break;
+
+                case 39: // right
+                socket.emit('robot.right');
+                break;
+
+                case 40: // down
+                socket.emit('robot.back');
+                break;
+
+                default: return;
+            }
+
+        }else{
+            isKeyDown = false;
+            socket.emit('robot.stop');
+        }
+
+        e.preventDefault();
     });
 
 

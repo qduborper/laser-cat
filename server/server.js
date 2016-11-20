@@ -7,28 +7,29 @@ var raspi = require('raspi-io'),
 board.on("ready", function() {
     console.log("board ready");
 
-    var path = require('path'),
-        auth = require('http-auth'),
-        basic = auth.basic({
-            realm: "Admin Area.",
-            file: __dirname + "/../data/users.htpasswd"
-        }),
-        express = require('express'),
-        app = express(),
-        server = require('http').Server(app),
-        io = require('socket.io')(server),
-        socketio_jwt   = require("socketio-jwt"),
-        jwt = require('jsonwebtoken'),
-        jwt_secret = 'piplaylasercatarduinoprojectraspberry',
-        turf = require('turf-random'),
-        storage = require('node-persist'),
-        currentsid = -1,
-        Joint = require('./servo-joint'),
-        Laser = require('./laser'),
-        Gun = require('./gun'),
-        Timer = require('./timer'),
-        Camera = require('./camera'),
-        timerCallback = null;
+    var path            = require('path'),
+        auth            = require('http-auth'),
+        basic           = auth.basic({
+                            realm: "Admin Area.",
+                            file: __dirname + "/../data/users.htpasswd"
+                        }),
+        express         = require('express'),
+        app             = express(),
+        server          = require('http').Server(app),
+        io              = require('socket.io')(server),
+        socketio_jwt    = require("socketio-jwt"),
+        jwt             = require('jsonwebtoken'),
+        jwt_secret      = 'piplaylasercatarduinoprojectraspberry',
+        turf            = require('turf-random'),
+        storage         = require('node-persist'),
+        currentsid      = -1,
+        Joint           = require('./servo-joint'),
+        Laser           = require('./laser'),
+        Gun             = require('./gun'),
+        Robot           = require('./robot'),
+        Timer           = require('./timer'),
+        Camera          = require('./camera'),
+        timerCallback   = null;
 
     // Server
     server.listen(80);
@@ -58,7 +59,7 @@ board.on("ready", function() {
     var camera = new Camera();
     camera.start();
 
-    // Arduino
+    // Raspberry GPIO
     var servoX = new Joint({
             minPos: 0,
             maxPos: 180,
@@ -78,7 +79,20 @@ board.on("ready", function() {
         laser = new Laser({
             pin: 'P1-36'
         }),
-        gun = new Gun()
+        robot = new Robot({
+            pinLeftWheel: 14,
+            pinRightWheel: 15
+        }),
+        gun = new Gun({
+            pin: 10,
+            offset: 15, //Adjust offset
+            invert: false
+        }),
+        gun2 = new Gun({
+            pin: 11,
+            offset: 0,
+            invert: true
+        })
     ;
 
     // Timer callback
@@ -88,22 +102,36 @@ board.on("ready", function() {
         if( io.sockets.sockets.length > 1 ){
             var soc = io.sockets.sockets[0];
             currentsid = soc.conn.id;
-            soc.emit('updateStatus', false);
+            soc.emit('status.update', false);
         }
     };*/
 
     //www Socket connection
+    
+    // listener function
+    var socketListener = function(socket, event, cb){
+
+        socket.on(event, function(params){
+
+            // Allow only one emiter
+            if( socket.id !== currentsid )
+                return;
+
+            cb(params);
+        });
+    };
 
     io.of('/www').on('connection', function(socket){
+        var wwwSockets = io.of('/www').sockets.clients();
 
         console.log("io connection ", socket.id);
-        console.log("io connections : ", io.of('/www').sockets.length);
-        io.of('/admin').emit('connections', io.of('/www').sockets.length);
+        console.log("io connections : ", wwwSockets.length);
+        io.of('/admin').emit('connections', wwwSockets.length);
 
         if( !laser.getDisable() && currentsid === -1 ){
             currentsid = socket.id;
         }else{
-            socket.emit('updateStatus', true);
+            socket.emit('status.update', true);
         }
 
         // Timer
@@ -113,59 +141,33 @@ board.on("ready", function() {
 
         // Events
 
-        socket.emit('updateCamera', camera.getIsStopped()); //Camera status
+        //Camera status
+        socket.emit('camera.update', camera.getIsStopped());
 
-        socket.on('laserOn', function(){
-
-            if( socket.id !== currentsid )
-                return;
-
+        // Laser
+        socketListener(socket, 'laser.on', function(){
             laser.on();
         });
 
-        socket.on('laserOff', function(){
-
-            if( socket.id !== currentsid )
-                return;
-
+        socketListener(socket, 'laser.off', function(){
             laser.off();
         });
 
-        socket.on('laserBlink', function(){
-
-            if( socket.id !== currentsid )
-                return;
-
+        socketListener(socket, 'laser.blink', function(){
             laser.blink(500);
         });
 
-        socket.on('laserMove', function(pos, fn){
-
-            if( socket.id !== currentsid )
-                return;
-
-            var p = laser.target(pos.x, pos.y);
+        socketListener(socket, 'laser.move', function(params){
+            var p = laser.target(params.pos.x, params.pos.y);
             servoX.move(p.x);
             servoY.move(p.y);
 
-            if( fn !== undefined ){
-                fn();
+            if( params.fn !== undefined ){
+                params.fn();
             }
         });
 
-        socket.on('shot', function(){
-
-            if( socket.id !== currentsid )
-                return;
-
-            gun.shot();
-        });
-
-        socket.on('moveToRandomPosition', function(){
-
-            if( socket.id !== currentsid )
-                return;
-
+        socketListener(socket, 'laser.moveToRandomPosition', function(){
             var calib = laser.getCalibration(),
                 xList = [calib.servo[0].x, calib.servo[1].x, calib.servo[2].x, calib.servo[3].x],
                 yList = [calib.servo[0].y, calib.servo[1].y, calib.servo[2].y, calib.servo[3].y],
@@ -186,30 +188,62 @@ board.on("ready", function() {
             servoY.move(Math.round(coord[1]));
         });
 
-        // Disconnection
+        // Gun
+        socketListener(socket, 'gun.shot1', function(){
+            gun.shot();
+        });
 
+        socketListener(socket, 'gun.shot2', function(){
+            gun2.shot();
+        });
+
+        // Robot wheels
+        socketListener(socket, 'robot.straight', function(){
+            robot.straight();
+        });
+
+        socketListener(socket, 'robot.back', function(){
+            robot.back();
+        });
+
+        socketListener(socket, 'robot.left', function(){
+            robot.left();
+        });
+
+        socketListener(socket, 'robot.right', function(){
+            robot.right();
+        });
+
+        socketListener(socket, 'robot.stop', function(){
+            robot.stop();
+        });
+
+        // Disconnection
         socket.on('disconnect', function(){
             console.log('user disconnected ', socket.id);
-            io.of('/admin').emit('connections', io.of('/www').sockets.length);
+            var wwwSockets = io.of('/www').sockets.clients();
+
+            io.of('/admin').emit('connections', wwwSockets.length);
 
             if( currentsid === socket.id ){
                 currentsid = -1;
 
                 //Update status for next client if exists
-                if( !laser.getDisable() && io.of('/www').sockets.length > 0 ){
-                    var soc = io.of('/www').sockets[0];
+                if( !laser.getDisable() && wwwSockets.length > 0 ){
+                    var soc = wwwSockets[0];
                     currentsid = soc.conn.id;
-                    soc.emit('updateStatus', false);
+                    soc.emit('status.update', false);
                 }
             }
 
             //Turn off laser if no connections
-            if( io.of('/www').sockets.length === 0 ){
+            if( wwwSockets.length === 0 ){
                 console.log('no connections, turn off laser');
                 laser.off();
             }
         });
     });
+
 
     //Admin Socket connection
 
@@ -220,11 +254,12 @@ board.on("ready", function() {
         
         //this socket is authenticated, we are good to handle more events from it.
         console.log(socket.decoded_token.user, 'connected');
+        var wwwSockets = io.of('/www').sockets.clients();
 
-        io.of('/admin').emit('connections', io.of('/www').sockets.length);
-        socket.emit('updateCamera', camera.getIsStopped()); //Camera status
+        io.of('/admin').emit('connections', wwwSockets.length);
+        socket.emit('camera.update', camera.getIsStopped()); //Camera status
 
-        socket.on('getSettings', function(cb){
+        socket.on('settings.get', function(cb){
             cb({
                 laser: laser.getIsOn(),
                 camera: camera.getIsStopped(),
@@ -233,46 +268,46 @@ board.on("ready", function() {
             });
         });
 
-        socket.on('cameraOn', function(){
+        socket.on('camera.on', function(){
             camera.start();
 
             setTimeout(function(){
-                io.of('/admin').emit('updateCamera', false);
-                io.of('/www').emit('updateCamera', false);
+                io.of('/admin').emit('camera.update', false);
+                io.of('/www').emit('camera.update', false);
             }, 5000);
         });
 
-        socket.on('cameraOff', function(){
+        socket.on('camera.off', function(){
             camera.stop();
-            io.of('/admin').emit('updateCamera', true);
-            io.of('/www').emit('updateCamera', true);
+            io.of('/admin').emit('camera.update', true);
+            io.of('/www').emit('camera.update', true);
         });
 
-        socket.on('controlsOn', function(){
+        socket.on('controls.on', function(){
             laser.setDisable(false);
+            var wwwSockets = io.of('/www').sockets.clients();
 
             //Update status for first client if exists
-            if( io.of('/www').sockets.length > 0 ){
-                var soc = io.of('/www').sockets[0];
+            if( wwwSockets.length > 0 ){
+                var soc = wwwSockets[0];
                 currentsid = soc.conn.id;
-                soc.emit('updateStatus', false);
+                soc.emit('status.update', false);
             }
         });
 
-        socket.on('controlsOff', function(){
+        socket.on('controls.off', function(){
             laser.setDisable(true);
             currentsid = -1;
-            io.of('/www').emit('updateStatus', true);
+            io.of('/www').emit('status.update', true);
         });
 
-        socket.on('setBreaks', function(breaks){
+        socket.on('breaks.set', function(breaks){
             var arr = breaks.split('\n');
             storage.setItem('breaks', arr);
         });
 
         // For calibration
-
-        socket.on('updateAxis', function(data, fn){
+        socket.on('axis.update', function(data, fn){
 
             if( data.axis === 'xaxis' ){
                 servoX.move( data.val );
@@ -285,19 +320,19 @@ board.on("ready", function() {
             }
         });
 
-        socket.on('getLaser', function(fn){
+        socket.on('laser.get', function(fn){
             if( fn !== undefined ){
                 fn( { x: servoX.getAngle(), y: servoY.getAngle() } );
             }
         });
 
-        socket.on('getCalibration', function(fn){
+        socket.on('calibration.get', function(fn){
             if( fn !== undefined ){
                 fn( laser.getCalibration() );
             }
         });
 
-        socket.on('setCalibration', function(calibration, fn){
+        socket.on('calibration.set', function(calibration, fn){
             laser.setCalibration(calibration.target, calibration.servo);
 
             if( fn !== undefined ){
@@ -305,22 +340,22 @@ board.on("ready", function() {
             }
         });
 
-        socket.on('laserOn', function(){
+        socket.on('laser.on', function(){
             laser.on();
         });
 
-        socket.on('laserOff', function(){
+        socket.on('laser.off', function(){
             laser.off();
         });
 
-        socket.on('laserMove', function(pos, fn){
+        socket.on('laser.move', function(params){
 
-            var p = laser.target(pos.x, pos.y);
+            var p = laser.target(params.pos.x, params.pos.y);
             servoX.move(p.x);
             servoY.move(p.y);
 
-            if( fn !== undefined ){
-                fn();
+            if( params.fn !== undefined ){
+                params.fn();
             }
         });
     });

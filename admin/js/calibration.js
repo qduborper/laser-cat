@@ -14,7 +14,7 @@ var calibration = function() {
     // Load calibration data from the server
     var getCalibration = function() {
         var $defer = $.Deferred();
-        socket.emit('getCalibration', function(cal){
+        socket.emit('calibration.get', function(cal){
             targetCal = cal.target;
             servoCal = cal.servo;
             $defer.resolve();
@@ -27,7 +27,7 @@ var calibration = function() {
     var setCalibration = function() {
         console.log('set calibration', targetCal, servoCal);
         updateTargetCal();
-        socket.emit('setCalibration', { target: targetCal, servo: servoCal }, function(){
+        socket.emit('calibration.set', { target: targetCal, servo: servoCal }, function(){
             //
         });
     };

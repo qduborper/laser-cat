@@ -10,7 +10,7 @@
           
             console.log('authenticated !');
 
-            socket.emit('getSettings', function(params){
+            socket.emit('settings.get', function(params){
 
                 var idLaser = params.laser ? 1 : 0,
                     idCamera = params.camera ? 0 : 1,
@@ -36,7 +36,7 @@
     });
     
     // Update camera
-    socket.on('updateCamera', function(nocamera){
+    socket.on('camera.update', function(nocamera){
 
         //If camera connected
         if( nocamera ){
@@ -60,7 +60,7 @@
 
     //Submit
     $('.js-submit').on('click', function(e){
-        socket.emit('setBreaks', $('.js-breaks').val());
+        socket.emit('breaks.set', $('.js-breaks').val());
     });
 
 
@@ -72,7 +72,7 @@
         var input = group.find('input');
         var erroralert = group.find('div.alert-danger');
         var updateAxis = function() {
-            socket.emit('updateAxis', { axis : axis, val : input.val() }, function(){
+            socket.emit('axis.update', { axis : axis, val : input.val() }, function(){
                 group.removeClass('has-error');
                 erroralert.hide();
             });
@@ -94,7 +94,7 @@
     setupAxis('yaxis');
     // Update servo positions by querying server
     var updateServos = function() {
-        socket.emit('getLaser', function(data){
+        socket.emit('laser.get', function(data){
             console.log('get laser', data);
             $('#xaxis input').val(data.x);
             $('#yaxis input').val(data.y);
@@ -122,9 +122,9 @@
     // Send target commands based on click locations
     $('#calibrateLayer').click(function(ev) {
         if (!calibration.isCalibrating()) {
-            socket.emit('laserMove', { x: ev.offsetX, y: ev.offsetY }, function(){
+            socket.emit('laser.move', { pos: { x: ev.offsetX, y: ev.offsetY }, fn: function(){
                 updateServos();
-            });
+            }});
         }
     });
 

@@ -7,11 +7,10 @@ var Gun = function(opts) {
         trigger = new Joint({
             minPos: 0,
             maxPos: 180,
-            offset: 0,
-            pin: 11,
+            offset: opts.offset,
+            pin: opts.pin,
             range: [0,180],
-            center: false,
-            invert: true,
+            invert: opts.invert,
             startAt: 0
         });
 
@@ -20,7 +19,7 @@ var Gun = function(opts) {
      * @return {void} 
      */
     var _shot = function(){
-        trigger.move(120);
+        trigger.move(100);
 
         setTimeout(() => {
             trigger.move(0);

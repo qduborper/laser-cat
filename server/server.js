@@ -86,12 +86,12 @@ board.on("ready", function() {
         gun = new Gun({
             pin: 10,
             offset: 15, //Adjust offset
-            invert: false
+            invert: true
         }),
         gun2 = new Gun({
             pin: 11,
             offset: 0,
-            invert: true
+            invert: false
         })
     ;
 
@@ -122,7 +122,7 @@ board.on("ready", function() {
     };
 
     io.of('/www').on('connection', function(socket){
-        var wwwSockets = io.of('/www').sockets.clients();
+        var wwwSockets = Object.keys(io.of('/www').sockets);
 
         console.log("io connection ", socket.id);
         console.log("io connections : ", wwwSockets.length);
@@ -221,7 +221,7 @@ board.on("ready", function() {
         // Disconnection
         socket.on('disconnect', function(){
             console.log('user disconnected ', socket.id);
-            var wwwSockets = io.of('/www').sockets.clients();
+            var wwwSockets = Object.keys(io.of('/www').sockets);
 
             io.of('/admin').emit('connections', wwwSockets.length);
 
@@ -254,7 +254,7 @@ board.on("ready", function() {
         
         //this socket is authenticated, we are good to handle more events from it.
         console.log(socket.decoded_token.user, 'connected');
-        var wwwSockets = io.of('/www').sockets.clients();
+        var wwwSockets = Object.keys(io.of('/www').sockets);
 
         io.of('/admin').emit('connections', wwwSockets.length);
         socket.emit('camera.update', camera.getIsStopped()); //Camera status
@@ -285,7 +285,7 @@ board.on("ready", function() {
 
         socket.on('controls.on', function(){
             laser.setDisable(false);
-            var wwwSockets = io.of('/www').sockets.clients();
+            var wwwSockets = Object.keys(io.of('/www').sockets);
 
             //Update status for first client if exists
             if( wwwSockets.length > 0 ){

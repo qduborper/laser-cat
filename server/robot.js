@@ -3,7 +3,8 @@
  */
 var Robot = function(opts) {
 
-    var leftWheel = new five.Servo.Continuous({
+    var five = require("johnny-five"),
+        leftWheel = new five.Servo.Continuous({
             controller: "PCA9685",
             pin: opts.pinLeftWheel
         }),

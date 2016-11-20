@@ -19,8 +19,8 @@ var Robot = function(opts) {
      * @return {void} 
      */
     var _straight = function(){
-        leftWheel.ccw(1);
-        rightWheel.cw(1);
+        leftWheel.cw(1);
+        rightWheel.ccw(1);
     };
 
     /**
@@ -28,8 +28,8 @@ var Robot = function(opts) {
      * @return {void} 
      */
     var _back = function(){
-        leftWheel.cw(1);
-        rightWheel.ccw(1);
+        leftWheel.ccw(1);
+        rightWheel.cw(1);
     };
 
     /**
@@ -37,8 +37,8 @@ var Robot = function(opts) {
      * @return {void} 
      */
     var _left = function(){
-        leftWheel.cw(1);
-        rightWheel.cw(1);
+        leftWheel.ccw(1);
+        rightWheel.ccw(1);
     };
 
     /**
@@ -46,8 +46,8 @@ var Robot = function(opts) {
      * @return {void} 
      */
     var _right = function(){
-        leftWheel.ccw(1);
-        rightWheel.ccw(1);
+        leftWheel.cw(1);
+        rightWheel.cw(1);
     };
 
     /**

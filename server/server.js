@@ -86,12 +86,12 @@ board.on("ready", function() {
         gun = new Gun({
             pin: 10,
             offset: 15, //Adjust offset
-            invert: true
+            invert: false
         }),
         gun2 = new Gun({
             pin: 11,
             offset: 0,
-            invert: false
+            invert: true
         })
     ;
 

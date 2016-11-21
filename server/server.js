@@ -80,8 +80,8 @@ board.on("ready", function() {
             pin: 'P1-36'
         }),
         robot = new Robot({
-            pinLeftWheel: 14,
-            pinRightWheel: 15
+            pinLeftWheel: 4,
+            pinRightWheel: 5
         }),
         gun = new Gun({
             pin: 10,
@@ -230,9 +230,8 @@ board.on("ready", function() {
 
                 //Update status for next client if exists
                 if( !laser.getDisable() && wwwSockets.length > 0 ){
-                    var soc = wwwSockets[0];
                     currentsid = wwwSockets[0];
-                    soc.emit('status.update', false);
+                    socket.broadcast.to(currentsid).emit('status.update', false);
                 }
             }
 
@@ -290,7 +289,7 @@ board.on("ready", function() {
             //Update status for first client if exists
             if( wwwSockets.length > 0 ){
                 currentsid = wwwSockets[0];
-                socket.emit('status.update', false);
+                socket.broadcast.to(currentsid).emit('status.update', false);
             }
         });
 

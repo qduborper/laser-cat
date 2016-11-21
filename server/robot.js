@@ -3,6 +3,8 @@
  */
 var Robot = function(opts) {
 
+    const SPEED = 0.5;
+
     var five = require("johnny-five"),
         leftWheel = new five.Servo.Continuous({
             controller: "PCA9685",
@@ -19,8 +21,8 @@ var Robot = function(opts) {
      * @return {void} 
      */
     var _straight = function(){
-        leftWheel.cw(1);
-        rightWheel.ccw(1);
+        leftWheel.cw(SPEED);
+        rightWheel.ccw(SPEED);
     };
 
     /**
@@ -28,8 +30,8 @@ var Robot = function(opts) {
      * @return {void} 
      */
     var _back = function(){
-        leftWheel.ccw(1);
-        rightWheel.cw(1);
+        leftWheel.ccw(SPEED);
+        rightWheel.cw(SPEED);
     };
 
     /**
@@ -37,8 +39,8 @@ var Robot = function(opts) {
      * @return {void} 
      */
     var _left = function(){
-        leftWheel.ccw(1);
-        rightWheel.ccw(1);
+        leftWheel.ccw(SPEED);
+        rightWheel.ccw(SPEED);
     };
 
     /**
@@ -46,8 +48,8 @@ var Robot = function(opts) {
      * @return {void} 
      */
     var _right = function(){
-        leftWheel.cw(1);
-        rightWheel.cw(1);
+        leftWheel.cw(SPEED);
+        rightWheel.cw(SPEED);
     };
 
     /**

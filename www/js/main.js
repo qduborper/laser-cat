@@ -52,7 +52,7 @@
 
     // Shot
     $('.js-shot-bt').on('click', function(e){
-        socket.emit($(this).find('input').attr('id'));
+        socket.emit($(this).attr('id'));
     });
 
     // Auto mode

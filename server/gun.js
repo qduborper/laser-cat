@@ -10,8 +10,8 @@ var Gun = function(opts) {
             offset: opts.offset,
             pin: opts.pin,
             range: [0,180],
-            invert: opts.invert,
-            startAt: 0
+            invert: opts.invert/*,
+            startAt: 0*/
         });
 
     /**

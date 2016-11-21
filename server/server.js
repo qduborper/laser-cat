@@ -231,7 +231,7 @@ board.on("ready", function() {
                 //Update status for next client if exists
                 if( !laser.getDisable() && wwwSockets.length > 0 ){
                     var soc = wwwSockets[0];
-                    currentsid = soc.conn.id;
+                    currentsid = wwwSockets[0];
                     soc.emit('status.update', false);
                 }
             }
@@ -289,9 +289,8 @@ board.on("ready", function() {
 
             //Update status for first client if exists
             if( wwwSockets.length > 0 ){
-                var soc = wwwSockets[0];
-                currentsid = soc.conn.id;
-                soc.emit('status.update', false);
+                currentsid = wwwSockets[0];
+                socket.emit('status.update', false);
             }
         });
 

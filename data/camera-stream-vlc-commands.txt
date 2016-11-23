@@ -1,4 +1,15 @@
-sudo v4l2-ctl --device=/dev/video0 --set-fmt-video=width=750,height=422,pixelformat=1
+sudo v4l2-ctl --device=/dev/video0 --set-fmt-video=width=752,height=416,pixelformat=1  && v4l2-ctl --set-parm=25
 
 
 cvlc v4l2:///dev/video0:chroma=mjpg:width=750:height=422:fps=25 --sout '#standard{access=http{mime=multipart/x-mixed-replace;boundary=--7b3cc56e5f51db803f790dad720ed50a},mux=mpjpeg,dst=:1234}' -vvv
+
+
+sudo v4l2-ctl --device=/dev/video0 --set-fmt-video=width=750,height=422,pixelformat=1
+sudo cvlc v4l2:///dev/video0 --demux h264
+sudo cvlc v4l2:///dev/video0:chroma=h264:width=750:height=422 --sout '#standard{access=http,mux=ts,dst=localhost:81,name=stream,mime=video/ts}' -vvv
+
+
+cvlc v4l2:///dev/video0 --v4l2-width 750 --v4l2-height 422 --v4l2-chroma h264 --v4l2-fps 12 --sout '#standard{access=http{mime=multipart/x-mixed-replace;boundary=--7b3cc56e5f51db803f790dad720ed50a},mux=mp4,dst=:81}' -vvv
+
+
+cvlc v4l2:///dev/video0 --v4l2-width 750 --v4l2-height 422 --v4l2-chroma h264 --sout '#standard{access=http,mux=ts,dst=:81}'

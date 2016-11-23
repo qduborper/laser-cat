@@ -39,8 +39,8 @@ var Robot = function(opts) {
      * @return {void} 
      */
     var _left = function(){
-        leftWheel.ccw(SPEED);
-        rightWheel.ccw(SPEED);
+        leftWheel.ccw( (SPEED / 2) );
+        rightWheel.ccw( (SPEED / 2) );
     };
 
     /**
@@ -48,8 +48,8 @@ var Robot = function(opts) {
      * @return {void} 
      */
     var _right = function(){
-        leftWheel.cw(SPEED);
-        rightWheel.cw(SPEED);
+        leftWheel.cw( (SPEED / 2) );
+        rightWheel.cw( (SPEED / 2) );
     };
 
     /**

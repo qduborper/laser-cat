@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Laser Cat</title>
+        <title>Nerf robot</title>
 
         <!-- Bootstrap -->
         <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -17,13 +17,13 @@
 
             <div class="jumbotron">
                 <div class="txt">
-                    <h1><span class="red">Laser</span> cat</h1>
-                    <p><strong>Play with Leonard !</strong><br>Turn on / off the laser and click on the video to move it where you want !</p>
+                    <h1><span class="red">Nerf</span> robot</h1>
+                    <p>Use your keyboard to move the robot.Turn on the laser and click on the video to move it where you want. Shot using buttons below.</p>
                 </div>
             </div>
 
             <div class="alert alert-danger js-status-ko hide" role="alert">
-                <strong>Sorry!</strong> But laser is disabled or someone else is currently playing with the cat. Wait for you turn (this message will disappear).
+                <strong>Sorry!</strong> But controls are disabled or someone else is currently playing with the robot. Wait for you turn (this message will disappear).
             </div>
 
             <div class="row">
@@ -44,10 +44,14 @@
                         </label>
                     </p>
                     <h3 class="no-margin-top">Shot</h3>
-                    <p class="btn-group btn-group-justified" data-toggle="buttons" aria-label="Shot">
-                        <button type="button" class="btn btn-default js-shot-bt" id="gun.shot1">1</button>
-                        <button type="button" class="btn btn-default js-shot-bt" id="gun.shot2">2</button>
-                    </p>
+                    <div class="btn-group btn-group-justified" role="group" aria-label="Shot">
+                      <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-primary js-shot-bt" id="gun.shot1">Nerf 1</button>
+                      </div>
+                      <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-primary js-shot-bt" id="gun.shot2">Nerf 2</button>
+                      </div>
+                    </div>
                     <!-- <h3 class="no-margin-top">Auto mode</h3>
                     <p class="btn-group btn-group-justified" data-toggle="buttons" aria-label="Toto">
                         <label class="btn btn-primary active js-automode-bt">

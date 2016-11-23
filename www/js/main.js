@@ -39,8 +39,8 @@
 
         var imgWidth = $(this).width(),
             imgHeight = $(this).height(),
-            x = e.offsetX * 750 / imgWidth,
-            y = e.offsetY * 422 / imgHeight;
+            x = e.offsetX * 752 / imgWidth,
+            y = e.offsetY * 416 / imgHeight;
 
         socket.emit('laser.move', { pos : { x: x, y: y } });
     });

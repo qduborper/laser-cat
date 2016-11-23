@@ -12,7 +12,7 @@ body{
 }
 
 .jumbotron:before{
-    content: url("../images/chaton2.png");
+    /*content: url("../images/chaton2.png");*/
     display: block;
     position: absolute;
     z-index: 1;

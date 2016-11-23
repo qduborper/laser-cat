@@ -90,7 +90,7 @@ board.on("ready", function() {
         }),
         gun2 = new Gun({
             pin: 11,
-            offset: 0,
+            offset: 10,
             invert: false
         })
     ;

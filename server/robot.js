@@ -13,15 +13,17 @@ var Robot = function(opts) {
         controller: "PCA9685",
         pin: opts.pinRightWheel,
         invert: true
-    })
-    wheels.both = new five.Servos([opts.pinLeftWheel, opts.pinRightWheel]).stop(); // reference both together
+    });
+    // wheels.both = new five.Servos([opts.pinLeftWheel, opts.pinRightWheel]).stop(); // reference both together
 
     /**
      * Go straight
      * @return {void} 
      */
     var _straight = function(){
-        wheels.both.cw();
+        // wheels.both.cw();
+        wheels.left.cw();
+        wheels.right.cw();
     };
 
     /**
@@ -29,7 +31,9 @@ var Robot = function(opts) {
      * @return {void} 
      */
     var _back = function(){
-        wheels.both.ccw();
+        // wheels.both.ccw();
+        wheels.left.ccw();
+        wheels.right.ccw();
     };
 
     /**
@@ -55,7 +59,9 @@ var Robot = function(opts) {
      * @return {void} 
      */
     var _stop = function(){
-        wheels.both.stop();
+        // wheels.both.stop();
+        wheels.left.stop();
+        wheels.right.stop();
     };
 
     return {

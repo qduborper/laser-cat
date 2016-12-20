@@ -80,8 +80,8 @@ board.on("ready", function() {
             pin: 'P1-36'
         }),
         robot = new Robot({
-            pinLeftWheel: 4,
-            pinRightWheel: 5
+            pinLeftWheel: 0,
+            pinRightWheel: 1
         }),
         gun = new Gun({
             pin: 10,

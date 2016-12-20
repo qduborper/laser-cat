@@ -3,19 +3,18 @@
  */
 var Robot = function(opts) {
 
-    var five = require("johnny-five"),
-        wheels = {},
-        wheels.left = new five.Servo.Continuous({
-            controller: "PCA9685",
-            pin: opts.pinLeftWheel
-        }),
-        wheels.right = new five.Servo.Continuous({
-            controller: "PCA9685",
-            pin: opts.pinRightWheel,
-            invert: true
-        }),
-        wheels.both = new five.Servos([opts.pinLeftWheel, opts.pinRightWheel]).stop(); // reference both together
-    ;
+    var five = require("johnny-five");
+    var wheels = {};
+    wheels.left = new five.Servo.Continuous({
+        controller: "PCA9685",
+        pin: opts.pinLeftWheel
+    });
+    wheels.right = new five.Servo.Continuous({
+        controller: "PCA9685",
+        pin: opts.pinRightWheel,
+        invert: true
+    })
+    wheels.both = new five.Servos([opts.pinLeftWheel, opts.pinRightWheel]).stop(); // reference both together
 
     /**
      * Go straight

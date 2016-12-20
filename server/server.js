@@ -95,6 +95,11 @@ board.on("ready", function() {
         })
     ;
 
+    // Add servos to REPL (optional)
+    this.repl.inject({
+        wheels: this.robot.wheels
+    });
+
     // Timer callback
     /*timerCallback = function(e){
 

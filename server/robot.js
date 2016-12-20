@@ -3,17 +3,18 @@
  */
 var Robot = function(opts) {
 
-    const SPEED = 0.5;
-
     var five = require("johnny-five"),
-        leftWheel = new five.Servo.Continuous({
+        wheels = {},
+        wheels.left = new five.Servo.Continuous({
             controller: "PCA9685",
             pin: opts.pinLeftWheel
         }),
-        rightWheel = new five.Servo.Continuous({
+        wheels.right = new five.Servo.Continuous({
             controller: "PCA9685",
-            pin: opts.pinRightWheel
-        })
+            pin: opts.pinRightWheel,
+            invert: true
+        }),
+        wheels.both = new five.Servos([opts.pinLeftWheel, opts.pinRightWheel]).stop(); // reference both together
     ;
 
     /**
@@ -21,8 +22,7 @@ var Robot = function(opts) {
      * @return {void} 
      */
     var _straight = function(){
-        leftWheel.cw(SPEED);
-        rightWheel.ccw(SPEED);
+        wheels.both.cw();
     };
 
     /**
@@ -30,8 +30,7 @@ var Robot = function(opts) {
      * @return {void} 
      */
     var _back = function(){
-        leftWheel.ccw(SPEED);
-        rightWheel.cw(SPEED);
+        wheels.both.ccw();
     };
 
     /**
@@ -39,8 +38,8 @@ var Robot = function(opts) {
      * @return {void} 
      */
     var _left = function(){
-        leftWheel.ccw( (SPEED / 2) );
-        rightWheel.ccw( (SPEED / 2) );
+        wheels.left.ccw();
+        wheels.right.cw();
     };
 
     /**
@@ -48,8 +47,8 @@ var Robot = function(opts) {
      * @return {void} 
      */
     var _right = function(){
-        leftWheel.cw( (SPEED / 2) );
-        rightWheel.cw( (SPEED / 2) );
+        wheels.left.cw();
+        wheels.right.ccw();
     };
 
     /**
@@ -57,8 +56,7 @@ var Robot = function(opts) {
      * @return {void} 
      */
     var _stop = function(){
-        leftWheel.stop();
-        rightWheel.stop();
+        wheels.both.stop();
     };
 
     return {
@@ -66,7 +64,8 @@ var Robot = function(opts) {
         back:           _back,
         left:           _left,
         right:          _right,
-        stop:           _stop
+        stop:           _stop,
+        wheels:         wheels
     };
 };
 
